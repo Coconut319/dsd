@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Automate your business with GHL. Book a free 30-minute consultation to discover how automation can 10x your leads.">
+    <title>GHL Automation - 10x Your Leads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="call-demos.html" class="nav-link">Call Examples</a>
+    </nav>
+
+    <!-- Landing Screen -->
+    <div id="landing-screen" class="screen active">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1 class="headline">
+                    Automate Your Business &<br>
+                    <span class="highlight">10x Your Leads</span> with GHL
+                </h1>
+                <p class="subheadline">Take the quiz. Discover how automation can transform your business in 10 minutes
+                </p>
+                <button class="cta-button" id="get-started-btn">Get started</button>
+            </section>
+
+            <!-- Social Proof Section -->
+            <section class="social-proof">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SM</div>
+                            <div class="author-info">
+                                <p class="author-name">Sarah M.</p>
+                                <p class="author-title">Agency Owner</p>
+                            </div>
+                        </div>
+                        <p class="testimonial-quote">"Increased my conversion rate by 300% in just 2 months!"</p>
+                    </div>
+                </div>
+
+                <div class="stat-badges">
+                    <div class="badge">
+                        <div class="badge-icon">👥</div>
+                        <div class="badge-content">
+                            <p class="badge-number">500+</p>
+                            <p class="badge-label">businesses automated</p>
+                        </div>
+                    </div>
+
+                    <div class="badge">
+                        <div class="badge-icon">⭐</div>
+                        <div class="badge-content">
+                            <p class="badge-number">4.9</p>
+                            <p class="badge-label">on Google Reviews</p>
+                        </div>
+                    </div>
+
+                    <div class="badge guarantee">
+                        <div class="badge-icon">✓</div>
+                        <div class="badge-content">
+                            <p class="badge-highlight">Free consultation</p>
+                            <p class="badge-label">No commitment</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen">
+        <div class="container">
+            <!-- Progress Indicator -->
+            <div class="progress-indicator">
+                <div class="progress-dot active" data-step="0"></div>
+                <div class="progress-dot" data-step="1"></div>
+                <div class="progress-dot" data-step="2"></div>
+                <div class="progress-dot" data-step="3"></div>
+                <div class="progress-dot" data-step="4"></div>
+            </div>
+
+            <!-- Quiz Content -->
+            <div class="quiz-content">
+                <h2 class="quiz-intro">Let's create a personalized automation strategy for YOUR business!</h2>
+                <div id="question-container">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Screen -->
+    <div id="booking-screen" class="screen">
+        <div class="container">
+            <div class="booking-content">
+                <div class="success-icon">🚀</div>
+                <h2 class="booking-headline">Perfect! Let's Get You Automated</h2>
+                <p class="booking-subheadline">Based on your answers, I can show you exactly how to <span
+                        class="highlight" id="personalized-benefit">transform your business</span> with GHL automation.
+                </p>
+
+                <div class="booking-benefits">
+                    <div class="benefit-item">
+                        <span class="check-icon">✓</span>
+                        <span>30-minute personalized demo</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="check-icon">✓</span>
+                        <span>Custom automation strategy for your business</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="check-icon">✓</span>
+                        <span>See real examples & results</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="check-icon">✓</span>
+                        <span>No commitment required</span>
+                    </div>
+                </div>
+
+                <div class="booking-cta">
+                    <p class="booking-prompt">Book your free Zoom call now:</p>
+                    <!-- Calendly inline widget begin -->
+                    <div id="booking-embed">
+                        <div class="calendly-inline-widget" data-url="https://calendly.com/abdelalissa78/30min"
+                            style="min-width:320px;height:700px;">
+                        </div>
+                        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"
+                            async>
+                            </script>
+                    </div>
+                    <!-- Calendly inline widget end -->
+                </div>
+
+                <p class="booking-footer">We respect your time. No sales pitch, just value.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
