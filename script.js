@@ -105,7 +105,7 @@ function showScreen(screenName) {
 
 function renderQuestion(index) {
     const question = appState.quizData[index];
-    
+
     const questionHTML = `
         <div class="question">
             <h3 class="question-text">${question.question}</h3>
@@ -118,15 +118,15 @@ function renderQuestion(index) {
             </div>
         </div>
     `;
-    
+
     elements.questionContainer.innerHTML = questionHTML;
-    
+
     // Add click handlers to options
     const optionCards = elements.questionContainer.querySelectorAll('.option-card');
     optionCards.forEach(card => {
         card.addEventListener('click', () => handleOptionClick(card, question.id));
     });
-    
+
     // Update progress indicator
     updateProgress(index);
 }
@@ -134,16 +134,16 @@ function renderQuestion(index) {
 function handleOptionClick(card, questionId) {
     // Store answer
     appState.answers[questionId] = card.dataset.value;
-    
+
     // Visual feedback
     const allCards = card.parentElement.querySelectorAll('.option-card');
     allCards.forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-    
+
     // Move to next question after delay
     setTimeout(() => {
         appState.currentQuestion++;
-        
+
         if (appState.currentQuestion < appState.quizData.length) {
             renderQuestion(appState.currentQuestion);
         } else {
@@ -170,8 +170,8 @@ function showBookingScreen() {
     // Personalize the benefit message based on their biggest challenge
     const challenge = appState.answers['challenge'];
     let benefit = 'transform your business';
-    
-    switch(challenge) {
+
+    switch (challenge) {
         case 'lead-gen':
             benefit = 'generate more qualified leads automatically';
             break;
@@ -185,14 +185,218 @@ function showBookingScreen() {
             benefit = 'save 10+ hours per week with automation';
             break;
     }
-    
+
     elements.personalizedBenefit.textContent = benefit;
-    
+
     // Show booking screen
     showScreen('booking');
-    
+
     // Optional: Log answers for analytics
     console.log('Quiz completed! User answers:', appState.answers);
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('GHL Automation Landing Page loaded! 🚀');
+
+    // Add keyboard support for quiz options
+    addKeyboardSupport();
+});
+
+// ============================================
+// KEYBOARD ACCESSIBILITY
+// ============================================
+
+function addKeyboardSupport() {
+    // Handle Enter/Space on quiz options
+    document.addEventListener('keydown', (e) => {
+        if (e.target.classList.contains('option-card')) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.target.click();
+            }
+        }
+    });
+
+    // Make option cards focusable
+    document.addEventListener('DOMSubtreeModified', () => {
+        const optionCards = document.querySelectorAll('.option-card');
+        optionCards.forEach(card => {
+            if (!card.hasAttribute('tabindex')) {
+                card.setAttribute('tabindex', '0');
+            }
+        });
+    });
+}
+
+// ============================================
+// ANALYTICS TRACKING (WITH CONSENT CHECK)
+// ============================================
+
+function trackEvent(eventName, eventParams = {}) {
+    // Only track if user has given consent
+    if (window.CookieConsent && window.CookieConsent.hasConsent('analytics')) {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, eventParams);
+        }
+    }
+}
+
+// ============================================
+// SCREEN NAVIGATION
+// ============================================
+
+function showScreen(screenName) {
+    // Fade out current screen
+    const currentScreen = document.querySelector('.screen.active');
+    if (currentScreen) {
+        currentScreen.classList.add('fade-out');
+        setTimeout(() => {
+            currentScreen.classList.remove('active', 'fade-out');
+        }, 300);
+    }
+
+    // Fade in new screen
+    setTimeout(() => {
+        screens[screenName].classList.add('active');
+        appState.currentPage = screenName;
+
+        // Track screen view
+        trackEvent('screen_view', {
+            screen_name: screenName
+        });
+
+        // Move focus to main content
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            mainContent.focus();
+        }
+    }, 300);
+}
+
+// ============================================
+// QUIZ FUNCTIONALITY
+// ============================================
+
+function renderQuestion(index) {
+    const question = appState.quizData[index];
+
+    const questionHTML = `
+        <div class="question">
+            <h3 class="question-text">${question.question}</h3>
+            <div class="options">
+                ${question.options.map(option => `
+                    <div class="option-card" data-value="${option.value}" tabindex="0" role="button" aria-label="${option.label}">
+                        ${option.label}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    elements.questionContainer.innerHTML = questionHTML;
+
+    // Add click handlers to options
+    const optionCards = elements.questionContainer.querySelectorAll('.option-card');
+    optionCards.forEach(card => {
+        card.addEventListener('click', () => handleOptionClick(card, question.id));
+    });
+
+    // Update progress indicator
+    updateProgress(index);
+}
+
+function handleOptionClick(card, questionId) {
+    // Store answer
+    appState.answers[questionId] = card.dataset.value;
+
+    // Track quiz answer
+    trackEvent('quiz_answer', {
+        question_id: questionId,
+        answer: card.dataset.value,
+        question_number: appState.currentQuestion + 1
+    });
+
+    // Visual feedback
+    const allCards = card.parentElement.querySelectorAll('.option-card');
+    allCards.forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+
+    // Move to next question after delay
+    setTimeout(() => {
+        appState.currentQuestion++;
+
+        if (appState.currentQuestion < appState.quizData.length) {
+            renderQuestion(appState.currentQuestion);
+        } else {
+            // Track quiz completion
+            trackEvent('quiz_completed', {
+                total_questions: appState.quizData.length
+            });
+            showBookingScreen();
+        }
+    }, 400);
+}
+
+function updateProgress(index) {
+    elements.progressDots.forEach((dot, i) => {
+        if (i <= index) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+
+    // Update ARIA attributes
+    const progressBar = document.querySelector('.progress-indicator');
+    if (progressBar) {
+        progressBar.setAttribute('aria-valuenow', index + 1);
+    }
+}
+
+// ============================================
+// BOOKING SCREEN PERSONALIZATION
+// ============================================
+
+function showBookingScreen() {
+    // Personalize the benefit message based on their biggest challenge
+    const challenge = appState.answers['challenge'];
+    let benefit = 'transform your business';
+
+    switch (challenge) {
+        case 'lead-gen':
+            benefit = 'generate more qualified leads automatically';
+            break;
+        case 'follow-up':
+            benefit = 'automate your follow-ups and never miss a lead';
+            break;
+        case 'conversion':
+            benefit = 'boost your conversion rates with smart automation';
+            break;
+        case 'time':
+            benefit = 'save 10+ hours per week with automation';
+            break;
+    }
+
+    elements.personalizedBenefit.textContent = benefit;
+
+    // Show booking screen
+    showScreen('booking');
+
+    // Track booking page view
+    trackEvent('booking_page_view', {
+        challenge: challenge
+    });
+
+    // Store answers in localStorage (essential functionality - no consent needed)
+    try {
+        localStorage.setItem('quiz_answers', JSON.stringify(appState.answers));
+    } catch (e) {
+        console.error('Could not save quiz answers:', e);
+    }
 }
 
 // ============================================
@@ -201,14 +405,27 @@ function showBookingScreen() {
 
 // Get Started button
 elements.getStartedBtn.addEventListener('click', () => {
+    trackEvent('quiz_started');
     showScreen('quiz');
     renderQuestion(0);
 });
 
-// ============================================
-// INITIALIZATION
-// ============================================
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('GHL Automation Landing Page loaded! 🚀');
-});
+// Error handling for Calendly
+window.addEventListener('error', (e) => {
+    if (e.message && e.message.includes('calendly')) {
+        console.error('Calendly failed to load');
+        const bookingEmbed = document.getElementById('booking-embed');
+        if (bookingEmbed) {
+            bookingEmbed.innerHTML = `
+                <div style="padding: var(--space-lg); text-align: center; background: var(--card-bg); border-radius: 12px;">
+                    <p style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                        Der Buchungskalender konnte nicht geladen werden.
+                    </p>
+                    <p style="color: var(--text-muted); font-size: var(--font-small);">
+                        Bitte kontaktieren Sie uns direkt per E-Mail oder versuchen Sie es später erneut.
+                    </p>
+                </div>
+            `;
+        }
+    }
+}, true);
