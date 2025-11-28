@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="See GHL automation in action with real call examples">
+    <title>GHL Automation - Call Examples</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="call-demos.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/call-demos/" class="nav-link active">Call Examples</a>
+    </nav>
+
+    <div class="screen active">
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="headline" style="font-size: 48px;">See GHL Automation in Action</h1>
+                <p class="subheadline">Listen to real examples of AI handling calls for different business scenarios</p>
+            </header>
+
+            <!-- Tabs (Industry Categories) -->
+            <div class="industry-tabs">
+                <button class="industry-tab active" data-industry="lead-followup">
+                    Lead Follow-up
+                </button>
+                <button class="industry-tab" data-industry="appointment">
+                    Appointment Booking
+                </button>
+                <button class="industry-tab" data-industry="support">
+                    Customer Support
+                </button>
+                <button class="industry-tab" data-industry="sales">
+                    Sales Qualification
+                </button>
+            </div>
+
+            <!-- Call Demo Player -->
+            <div class="call-player-container">
+                <!-- Audio Player -->
+                <div class="audio-player-section">
+                    <audio controls class="audio-player" id="main-audio">
+                        <source src="../audio/lead-followup.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+
+                <!-- Video Section -->
+                <div class="demo-content">
+                    <div class="video-column">
+                        <div class="speaker-indicators">
+                            <div class="speaker-badge ai-badge active">
+                                <span class="badge-icon">🤖</span>
+                                <span class="badge-text">AI</span>
+                            </div>
+                            <div class="speaker-badge caller-badge">
+                                <span class="badge-icon">📞</span>
+                                <span class="badge-text">Caller</span>
+                            </div>
+                        </div>
+
+                        <!-- Video Player Placeholder -->
+                        <div class="video-container">
+                            <video class="call-video" id="call-video" poster="../videos/placeholder-poster.jpg">
+                                <source src="../videos/lead-followup.mp4" type="video/mp4">
+                                Your browser does not support the video element.
+                            </video>
+                            <div class="video-placeholder">
+                                <div class="placeholder-icon">🎥</div>
+                                <p class="placeholder-text">Video will be added here</p>
+                                <p class="placeholder-subtext">Upload your call recording video</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <h2 class="cta-title">Ready to Automate Your Calls?</h2>
+                <p class="cta-text">See how GHL automation can handle your calls 24/7, book appointments, and never miss
+                    a lead.</p>
+                <a href="/" class="cta-button">Start Your Quiz</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="call-demos.js"></script>
+</body>
+
+</html>
