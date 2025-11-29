@@ -274,11 +274,65 @@ function showBookingScreen() {
         challenge: challenge
     });
 
+    //Load Calendly (with consent check)
+    setTimeout(() => {
+        loadCalendly();
+    }, 500); // Small delay to ensure screen is visible
+
     // Store answers in localStorage (essential functionality - no consent needed)
     try {
         localStorage.setItem('quiz_answers', JSON.stringify(appState.answers));
     } catch (e) {
         console.error('Could not save quiz answers:', e);
+    }
+}
+
+// ============================================
+// CALENDLY INTEGRATION (CONSENT-PROTECTED)
+// ============================================
+
+function loadCalendly() {
+    // Only load if we have consent for analytics/marketing cookies
+    if (window.CookieConsent && window.CookieConsent.hasConsent('analytics')) {
+        const bookingEmbed = document.getElementById('booking-embed');
+        const placeholder = document.getElementById('calendly-placeholder');
+
+        if (bookingEmbed && placeholder) {
+            // Remove placeholder
+            placeholder.remove();
+
+            // Create Calendly widget
+            const calendlyWidget = document.createElement('div');
+            calendlyWidget.className = 'calendly-inline-widget';
+            calendlyWidget.setAttribute('data-url', 'https://calendly.com/abdelalissa78/30min');
+            calendlyWidget.style.minWidth = '320px';
+            calendlyWidget.style.height = '700px';
+            bookingEmbed.appendChild(calendlyWidget);
+
+            // Load Calendly script
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://assets.calendly.com/assets/external/widget.js';
+            script.async = true;
+            document.body.appendChild(script);
+
+            console.log('✅ Calendly loaded with consent');
+        }
+    } else {
+        // Show message asking for consent
+        const bookingEmbed = document.getElementById('booking-embed');
+        if (bookingEmbed) {
+            bookingEmbed.innerHTML = `
+                <div style="padding: var(--space-xl); text-align: center; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px;">
+                    <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: var(--font-body);">
+                        📅 To view the booking calendar, please accept cookies.
+                    </p>
+                    <p style="color: var(--text-muted); font-size: var(--font-small);">
+                        We use Calendly to manage appointments. Accepting cookies allows us to load the booking widget.
+                    </p>
+                </div>
+            `;
+        }
     }
 }
 
@@ -302,10 +356,10 @@ window.addEventListener('error', (e) => {
             bookingEmbed.innerHTML = `
                 <div style="padding: var(--space-lg); text-align: center; background: var(--card-bg); border-radius: 12px;">
                     <p style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
-                        Der Buchungskalender konnte nicht geladen werden.
+                        The booking calendar could not be loaded.
                     </p>
                     <p style="color: var(--text-muted); font-size: var(--font-small);">
-                        Bitte kontaktieren Sie uns direkt per E-Mail oder versuchen Sie es später erneut.
+                        Please contact us directly or try again later.
                     </p>
                 </div>
             `;
