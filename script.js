@@ -87,6 +87,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add keyboard support for quiz options
     addKeyboardSupport();
+    
+    // Check if we're coming from the call examples page
+    if (sessionStorage.getItem('startQuizFromCallExamples') === 'true') {
+        // Clear the flag so it doesn't trigger again on refresh
+        sessionStorage.removeItem('startQuizFromCallExamples');
+        
+        // Small delay to ensure all elements are properly loaded
+        setTimeout(() => {
+            // Start the quiz
+            trackEvent('quiz_started_from_call_examples');
+            showScreen('quiz');
+            renderQuestion(0);
+            
+            // Scroll to the quiz section
+            const quizSection = document.getElementById('quiz-screen');
+            if (quizSection) {
+                quizSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100);
+    }
 });
 
 // ============================================

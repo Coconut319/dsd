@@ -4,6 +4,19 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Call Demos Page Loaded');
+
+    // Handle Start Quiz button click
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', function() {
+            // Store the state that we're coming from the call examples page
+            sessionStorage.setItem('startQuizFromCallExamples', 'true');
+            // Navigate to the homepage
+            window.location.href = '/';
+        });
+    }
+
     const industryTabs = document.querySelectorAll('.industry-tab');
     const audioPlayer = document.getElementById('main-audio');
     const videoPlayer = document.getElementById('call-video');
