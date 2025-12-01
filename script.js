@@ -87,46 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add keyboard support for quiz options
     addKeyboardSupport();
-
-    // Check if we're coming from the call examples page (via sessionStorage)
+    
+    // Check if we're coming from the call examples page
     if (sessionStorage.getItem('startQuizFromCallExamples') === 'true') {
         // Clear the flag so it doesn't trigger again on refresh
         sessionStorage.removeItem('startQuizFromCallExamples');
-
+        
         // Small delay to ensure all elements are properly loaded
         setTimeout(() => {
             // Start the quiz
             trackEvent('quiz_started_from_call_examples');
             showScreen('quiz');
             renderQuestion(0);
-
+            
             // Scroll to the quiz section
             const quizSection = document.getElementById('quiz-screen');
             if (quizSection) {
                 quizSection.scrollIntoView({ behavior: 'smooth' });
             }
-        }, 100);
-    }
-
-    // Check for URL parameter to start quiz (Direct Link)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('start_quiz') === 'true') {
-        // Small delay to ensure all elements are properly loaded
-        setTimeout(() => {
-            // Start the quiz
-            trackEvent('quiz_started_from_url');
-            showScreen('quiz');
-            renderQuestion(0);
-
-            // Scroll to the quiz section
-            const quizSection = document.getElementById('quiz-screen');
-            if (quizSection) {
-                quizSection.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            // Clean up URL
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
         }, 100);
     }
 });
